@@ -1,5 +1,5 @@
 import base64, json, requests, os, time
-
+from django.core.cache import cache
 
 class SpotifyAuthError(Exception):
     """
@@ -24,9 +24,6 @@ class SpotifyAuth(object):
     CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
     CALLBACK_URL = "http://localhost:5000/auth"
     SCOPE = "user-read-email user-read-private"
-    access_token = None
-    refresh_token = None
-    expires_at = None
 
     def getAuth(self, client_id, redirect_uri, scope):
         return (
@@ -65,19 +62,21 @@ class SpotifyAuth(object):
             raise SpotifyAuthError(response)
         # refresh token is absent of response while refreshing access token
         if "refresh_token" in response:
-            self.refresh_token = response['refresh_token']
-        self.access_token = response['access_token']
-        self.expires_at = int(time.time()) + response['expires_in']
-        print("ACCESS TOKEN IN AUTH: " + self.access_token)
-        return self.access_token
+            keys = ["access_token", "expires_in", "refresh_token"]
+        else:
+            keys = ["access_token", "expires_in"]
+        return {
+            key: response[key]
+            for key in keys
+        }
 
-    def refreshAuth(self, refresh_token, client_id, client_secret):
+    def refreshAuth(self, refresh_token):
         body = {"grant_type": "refresh_token", "refresh_token": refresh_token}
 
         post_refresh = requests.post(
             self.SPOTIFY_URL_TOKEN,
             data=body,
-            headers=self.getHeaders(client_id, client_secret)
+            headers=self.getHeaders(self.CLIENT_ID, self.CLIENT_SECRET)
             )
         p_back = json.loads(post_refresh.text)
 
@@ -87,33 +86,37 @@ class SpotifyAuth(object):
         return self.getAuth(
             self.CLIENT_ID, f"{self.CALLBACK_URL}/callback", self.SCOPE,
         )
-
-    def is_token_expired(self):
-        now = int(time.time())
-        return self.expires_at - now < 60
     
     def getUserTokens(self, code):
         return self.getToken(
             code, self.CLIENT_ID, self.CLIENT_SECRET, f"{self.CALLBACK_URL}/callback"
         )
 
-    def getAccessToken(self):
-        if self.access_token:
-            if self.is_token_expired():
-                return self.refreshAuth(
-                    self.refresh_token,
-                    self.CLIENT_ID,
-                    self.CLIENT_SECRET
-                )
-            else:
-                return self.access_token
+
+def is_token_expired(expires_at):
+    now = int(time.time())
+    return expires_at - now < 60
+
+
+def getAccessToken():
+    access_token = cache.get('access_token')
+    refresh_token = cache.get('refresh_token')
+    expires_at = cache.get('expires_at')
+    if access_token:
+        if is_token_expired(expires_at):
+            response = SpotifyAuth().refreshAuth(refresh_token)
+            access_token = response['access_token']
+            cache.set('access_token', access_token)
+            expires_at = int(time.time()) + response['expires_in']
+            cache.set('expires_at', expires_at)
+            return access_token
         else:
-            raise SpotifyAuthError({
-                        "error":"missing_tokens",
-                        "error_description":
-                            "Access and refresh tokens must first be requested",
-                    })
+            return access_token
+    else:
+        raise SpotifyAuthError({
+                    "error":"missing_tokens",
+                    "error_description":
+                        "Access and refresh tokens must first be requested",
+                })
 
-
-spotify_auth = SpotifyAuth()
 
