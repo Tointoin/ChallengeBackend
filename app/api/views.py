@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
-from api.app.spotify_auth import spotify_auth
+from app.api.spotify_auth import spotify_auth
 
 import os
 
