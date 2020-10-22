@@ -16,8 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-import app.views as views
+from api.app import views
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path(
+        "auth/callback", views.SpotifyCallbackView, name="spotify callback"
+    ),
+    path("auth/", views.SpotifyLoginView.as_view(), name="spotify login"),
+    path("token/", views.TokenAccessView, name="give access token"),
+    path("token-refresh/", views.RefreshTokenView, name="refresh and return token"),
 ]
