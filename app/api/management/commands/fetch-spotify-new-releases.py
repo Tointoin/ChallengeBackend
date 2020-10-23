@@ -5,8 +5,6 @@ from app.api.models import Album, Artist
 
 import json, requests
 
-# global spotify_auth
-
 
 class Command(BaseCommand):
     help = "Fetch new released albums from Spotify API and store them in database"
@@ -37,6 +35,7 @@ class Command(BaseCommand):
         response = json.loads(
             requests.get(self.SPOTIFY_URL_API_NEW_RELEASE, params=params).text
         )
+        print('KOUKOU')
         self.handleFetchedData(response['albums']['items'])
         while response['albums']['next']:
             response = json.loads(

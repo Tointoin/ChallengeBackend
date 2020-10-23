@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'app.api',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +61,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+CRONJOBS = [
+    ('* 9 * * *', 'django.core.management.call_command', ['fetch-spotify-new-releases']),
+]
 
 ROOT_URLCONF = 'app.urls'
 
