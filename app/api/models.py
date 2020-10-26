@@ -66,7 +66,7 @@ class Album(ReferencedOnSpotifyAPI, UUID):
         help_text=_(
             "List of artists that have played on the album."
             )
-        ) 
+        )
     album_type = models.CharField(
         _('album_type'),
         max_length=11,
@@ -92,4 +92,3 @@ class Album(ReferencedOnSpotifyAPI, UUID):
 
     def __str__(self):
         return self.title
-
