@@ -24,7 +24,4 @@ urlpatterns = [
     path(
         "auth/callback", views.SpotifyCallbackView, name="spotify callback"
     ),
-    path("auth/", views.SpotifyLoginView.as_view(), name="spotify login"),
-    path("token/", views.TokenAccessView, name="give access token"),
-    path("token-refresh/", views.RefreshTokenView, name="refresh and return token"),
 ]

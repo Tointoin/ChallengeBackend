@@ -34,14 +34,6 @@ def TokenAccessView(request):
     return Response(data=data, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def RefreshTokenView(request):
-    response = SpotifyAuth().refreshAuth(cache.get('refresh_token'))
-    access_token = response['access_token']
-    cache.set('access_token', access_token)
-    expires_at = int(time.time()) + response['expires_in']
-    cache.set('expires_at', expires_at)
-    return Response(data=access_token, status=status.HTTP_200_OK)
 
 
 
