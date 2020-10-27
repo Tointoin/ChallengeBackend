@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    environment:
+        - DEBUG=0
+    command: >
+        bash -c "python manage.py collectstatic --noinput
+        && uwsgi --http :${PORT} --ini ./prod/uwsgi.ini"
+    ports:
+      - "${PORT}:${PORT}"

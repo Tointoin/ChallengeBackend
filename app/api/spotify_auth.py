@@ -20,9 +20,9 @@ class SpotifyAuth(object):
     SPOTIFY_URL_TOKEN = "https://accounts.spotify.com/api/token/"
     RESPONSE_TYPE = "code"
     HEADER = "application/x-www-form-urlencoded"
-    CLIENT_ID = os.environ.get("CLIENT_ID")
-    CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
-    CALLBACK_URL = "http://localhost:5000/auth"
+    CLIENT_ID = os.environ.get("SPOTIFY_CLIENT_ID")
+    CLIENT_SECRET = os.environ.get("SPOTIFY_CLIENT_SECRET")
+    CALLBACK_URL = "http://localhost:" + os.environ.get("PORT") + "/auth"
     SCOPE = "user-read-email user-read-private"
 
     def getAuth(self, client_id, redirect_uri, scope):

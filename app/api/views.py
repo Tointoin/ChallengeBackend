@@ -38,12 +38,6 @@ def SpotifyCallbackView(request):
     return Response(status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def TokenAccessView(request):
-    data = getAccessToken()
-    return Response(data=data, status=status.HTTP_200_OK)
-
-
 def filter_days_since_release(queryset, name, value):
     if not value:
         value = 7

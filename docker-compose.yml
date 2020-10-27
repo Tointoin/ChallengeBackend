@@ -12,6 +12,7 @@ services:
     command: python manage.py runserver 0.0.0.0:5000
     volumes:
       - .:/code
+      - ./var:/var
     ports:
       - "5000:5000"
     depends_on:
