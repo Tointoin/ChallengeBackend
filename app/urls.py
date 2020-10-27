@@ -20,6 +20,7 @@ from app.api import views
 
 
 urlpatterns = [
+    path("api/artists/", views.NewReleaseArtistView.as_view(), name="artist-list"),
     path("admin/", admin.site.urls),
     path("auth/", views.SpotifyLoginView.as_view(), name="spotify-login"),
     path(

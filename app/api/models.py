@@ -57,6 +57,9 @@ class Album(ReferencedOnSpotifyAPI, UUID):
         SINGLE = "single"
         COMPILATION = "compilation"
 
+    class Meta:
+        ordering = ['-release_date']
+
     title = models.CharField(_('title'), blank=True, max_length=512)
     artists = models.ManyToManyField(
         'Artist',
