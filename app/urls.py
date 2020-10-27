@@ -21,7 +21,8 @@ from app.api import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("auth/", views.SpotifyLoginView.as_view(), name="spotify-login"),
     path(
-        "auth/callback", views.SpotifyCallbackView, name="spotify callback"
+        "auth/callback", views.SpotifyCallbackView, name="spotify-callback"
     ),
 ]
