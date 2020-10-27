@@ -1,10 +1,12 @@
-from django.views.generic.base import RedirectView
+from django.views.generic.base import RedirectView, TemplateView
 from django.core.cache import cache
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.generics import ListAPIView
 from rest_framework import status
+from rest_framework.schemas import get_schema_view
+from rest_framework.schemas.openapi import SchemaGenerator
 
 from app.api.spotify_auth import SpotifyAuth, getAccessToken
 
@@ -81,5 +83,20 @@ class NewReleaseArtistView(ListAPIView):
     serializer_class = serializer.ArtistSerializer
     filter_backends = (DjangoFilterBackend,)
     filterset_class = NewReleaseArtistFilter
+
+
+schema_view = get_schema_view(
+    title="Challenge Groover API",
+    description=("Challenge Groover"),
+    version="1.0.0a",
+    generator_class=SchemaGenerator,
+)
+
+
+class ReDocView(TemplateView):
+    """TemplateView to serve ReDoc template."""
+    template_name = "api/redoc.html"
+    # `extra_context` provided with view name of `SchemaView`
+    extra_context = {'schema_url': 'openapi-schema'}
 
 

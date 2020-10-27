@@ -26,4 +26,7 @@ urlpatterns = [
     path(
         "auth/callback", views.SpotifyCallbackView, name="spotify-callback"
     ),
+    path('api/docs/', views.ReDocView.as_view(), name='redoc'),
+    path('api/schema/', views.schema_view, name="openapi-schema"),
+    
 ]
