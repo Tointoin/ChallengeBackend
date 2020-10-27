@@ -29,7 +29,7 @@ class NewReleaseArtistViewSetTesCase(APITestCase):
 
         self.parameters = {
             "is_available_france":True,
-            "days_since_release":4,
+            "max_days_since_release":4,
             "album_type":"single",
         }
 
@@ -45,4 +45,4 @@ class NewReleaseArtistViewSetTesCase(APITestCase):
             format='json'
             )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(response.data["count"], 1)
