@@ -44,7 +44,10 @@ class UUID(models.Model):
 # Models in DB
 class Artist(ReferencedOnSpotifyAPI, UUID):
 
-    name = models.CharField(_('name'), blank=True, max_length=512)  
+    name = models.CharField(_('name'), blank=True, max_length=512) 
+
+    class Meta(ReferencedOnSpotifyAPI.Meta):
+        ordering = ['name'] 
 
     def __str__(self):
         return self.name
@@ -57,7 +60,7 @@ class Album(ReferencedOnSpotifyAPI, UUID):
         SINGLE = "single"
         COMPILATION = "compilation"
 
-    class Meta:
+    class Meta(ReferencedOnSpotifyAPI.Meta):
         ordering = ['-release_date']
 
     title = models.CharField(_('title'), blank=True, max_length=512)
