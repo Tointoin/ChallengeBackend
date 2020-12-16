@@ -68,7 +68,7 @@ REST_FRAMEWORK = {
 }
 
 CRONJOBS = [
-    ('* 9 * * *', 'django.core.management.call_command', ['fetch-spotify-new-releases']),
+    ('0 9 * * *', 'django.core.management.call_command', ['fetch-spotify-new-releases']),
 ]
 
 ROOT_URLCONF = 'app.urls'

@@ -1,6 +1,6 @@
 # Challenge Groover
 
-> :warning: This API is in **development stage**.
+> :warning: This API is in an **alpha version**. Further deployement setup may be needed.
 
 This project aims to meet [Groover's backend development challenge](https://github.com/Groover-Dev/ChallengeBackend) summerized in `INSTRUCTION.md`.
 
@@ -9,6 +9,10 @@ This project is built with:
 * Python
 * Django and Django REST Framework
 * PostgreSQL
+* django-filter
+* django-crontab
+* diskcache
+* model-bakery
 
 ## Project setup
 
